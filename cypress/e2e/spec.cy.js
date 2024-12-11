@@ -68,4 +68,80 @@ describe('TODOMvc App', () => {
       .children()
       .should('have.length', 2);
   });
+  
+  it('Editar uma tarefa e salvar', () => {
+    cy.visit('http://127.0.0.1:7001'); 
+
+    cy.get('.new-todo')
+      .type('TP2 de ES{enter}');
+
+    cy.get('.todo-list li label')
+      .dblclick();
+
+    cy.get('.edit')
+      .clear()
+      .type('TP2 de Engenharia de Software{enter}');
+
+    cy.get('.todo-list li label')
+      .should('have.text', 'TP2 de Engenharia de Software');
+
+  });
+
+  it ('Marca e desmarca as tarefas', () => {
+    cy.visit('http://127.0.0.1:7001'); 
+    cy.get('.new-todo')
+      .type('TP2 de ES{enter}')
+      .type('TP2 de Compiladores{enter}');
+
+    cy.get('.toggle')
+      .first()
+      .click();
+    cy.get('.toggle')
+      .first()
+      .should('be.checked');
+    cy.get('.toggle')
+      .last()
+      .click();
+    cy.get('.toggle')
+      .last()
+      .should('be.checked');
+
+    cy.get('.toggle')
+      .first()
+      .click();
+    cy.get('.toggle')
+      .first()
+      .should('not.be.checked');
+    cy.get('.toggle')
+      .last()
+      .click();
+    cy.get('.toggle')
+      .last()
+      .should('not.be.checked');
+
+  });
+
+  it ('Apagar todas apos concluídas', () => {
+    cy.visit('http://127.0.0.1:7001'); 
+    cy.get('.new-todo')
+      .type('TP2 de ES{enter}')
+      .type('TP2 de Compiladores{enter}');
+
+    cy.get('.toggle')
+      .first()
+      .click();
+    cy.get('.toggle')
+      .last()
+      .click();
+    cy.get('.todo-list li')
+      .should('have.length', 2);
+
+    cy.get('.clear-completed')
+      .click();
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
+
+
+
 });
